@@ -1,5 +1,5 @@
-SRCS =		main.c ft_info.c ./outils/ft_atoi.c ft_errors.c ft_threads.c ft_routine.c \
-			ft_time.c ft_locks.c ./outils/ft_strlen.c ft_forks.c ft_alive.c
+SRCS =		main.c info.c ./outils/ft_atoi.c errors.c threads.c routine.c \
+			time.c locks.c ./outils/ft_strlen.c forks.c alive.c ./outils/check.c
 
 OBJS    =   ${SRCS:.c=.o}
 
@@ -16,7 +16,7 @@ LTHREAD = -lpthread
 all:		${NAME}
 
 ${NAME}:	${OBJS}
-			${CC} ${CFLAGS} -o ${NAME} ${OBJS} ${LTHREAD}
+			${CC} ${CFLAGS} -o ${NAME} ${OBJS} ${LTHREAD} 
 
 clean:
 			${RM} ${OBJS}

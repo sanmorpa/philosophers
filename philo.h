@@ -6,7 +6,7 @@
 /*   By: samoreno <samoreno@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/26 10:05:07 by samoreno          #+#    #+#             */
-/*   Updated: 2022/02/21 12:35:09 by samoreno         ###   ########.fr       */
+/*   Updated: 2022/04/27 10:15:02 by samoreno         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,8 @@ typedef struct s_info
 	long long int	timestamp;
 	int				death;
 	pthread_mutex_t	pr_lock;
+	pthread_mutex_t	eat_lock;
+	pthread_mutex_t	death_lock;
 }	t_info;
 
 typedef struct s_philo
@@ -61,4 +63,5 @@ int				ft_pick_forks(t_philo *philo);
 void			ft_drop_forks(t_philo *philo);
 void			ft_join_threads(int threads, pthread_t *philos, void **retvals);
 int				ft_filled(t_philo *philos);
+int				ft_check_death(t_info *info);
 #endif
