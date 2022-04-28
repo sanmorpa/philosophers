@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_info.c                                          :+:      :+:    :+:   */
+/*   info.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: samoreno <samoreno@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/04 14:49:05 by samoreno          #+#    #+#             */
-/*   Updated: 2022/02/16 11:09:52 by samoreno         ###   ########.fr       */
+/*   Updated: 2022/04/28 16:46:05 by samoreno         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,3 +70,8 @@ t_philo	*ft_philos(t_info *info)
 	}
 	return (philos);
 }
+
+/*These functions allocate and fill all the necessary information:
+An array of n structures t_philo that have individual philosopher information
+and a pointer to a single t_info structure that has the shared info for all
+philosphers */

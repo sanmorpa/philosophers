@@ -6,7 +6,7 @@
 /*   By: samoreno <samoreno@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/26 10:05:07 by samoreno          #+#    #+#             */
-/*   Updated: 2022/04/27 10:15:02 by samoreno         ###   ########.fr       */
+/*   Updated: 2022/04/28 17:06:13 by samoreno         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,17 +51,18 @@ int				ft_errors(int argc, char **argv);
 t_info			ft_info(int argc, char **argv);
 t_philo			*ft_philos(t_info *info);
 int				ft_atoi(const char *str);
-int				ft_threads(t_philo **philos);
+void			ft_threads(t_philo **philos);
 void			*ft_routine(void *arg);
-void			*ft_alive(t_philo *philos);
+void			ft_alive(t_philo *philos);
 void			*ft_wait(int event, t_philo *philo);
-void			ft_free_mutexs(t_philo **philos, pthread_mutex_t *locks);
 pthread_mutex_t	*ft_mutexs(t_info *info);
 void			ft_forks(t_philo *philos, pthread_mutex_t *locks);
 long long int	ft_time_diff(struct timeval now, long long int og);
 int				ft_pick_forks(t_philo *philo);
 void			ft_drop_forks(t_philo *philo);
-void			ft_join_threads(int threads, pthread_t *philos, void **retvals);
+void			ft_join_threads(int threads, pthread_t *thr, void **retvals);
 int				ft_filled(t_philo *philos);
 int				ft_check_death(t_info *info);
+void			ft_destroy_mutex(int iter, pthread_mutex_t *mutexs,
+					t_info *info);
 #endif

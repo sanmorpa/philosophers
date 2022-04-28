@@ -6,17 +6,17 @@
 /*   By: samoreno <samoreno@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/14 10:13:33 by samoreno          #+#    #+#             */
-/*   Updated: 2022/04/27 11:21:55 by samoreno         ###   ########.fr       */
+/*   Updated: 2022/04/28 17:34:59 by samoreno         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
 static int	ft_status(t_philo *philo, int iter);
-static void	ft_print_death(t_philo philo);
+static void	ft_print_death(t_philo *philo, int iter);
 static void	ft_unlock(t_philo *philos);
 
-void	*ft_alive(t_philo *philos)
+void	ft_alive(t_philo *philos)
 {
 	int	status;
 	int	iter;
@@ -29,22 +29,20 @@ void	*ft_alive(t_philo *philos)
 		iter = 0;
 		while (iter < philos[0].gen->n_philo)
 		{
-			status = ft_status(philos, iter);
+			status = ft_status(philos, iter++);
 			filled = ft_filled(philos);
 			if (status == 1 || filled == 1)
 				break ;
-			iter++;
 		}
-		usleep(200);
+		usleep(2000);
 	}
 	pthread_mutex_lock(&philos[0].gen->death_lock);
 	philos[0].gen->death = 1;
 	pthread_mutex_unlock(&philos[0].gen->death_lock);
 	pthread_mutex_lock(&philos[0].gen->pr_lock);
 	if (status == 1)
-		ft_print_death(philos[iter]);
+		ft_print_death(philos, iter);
 	ft_unlock(philos);
-	return (NULL);
 }
 
 static void	ft_unlock(t_philo *philos)
@@ -96,11 +94,13 @@ static int	ft_status(t_philo *philo, int iter)
 	return (1);
 }
 
-static void	ft_print_death(t_philo philo)
+static void	ft_print_death(t_philo *philo, int iter)
 {
 	struct timeval	death;
 
+	if (iter == philo[0].gen->n_philo)
+		iter -= 1;
 	gettimeofday(&death, NULL);
 	printf("[%lld] #%d has died\n",
-		ft_time_diff(death, philo.gen->timestamp), philo.id_philo);
+		ft_time_diff(death, philo[iter].gen->timestamp), philo[iter].id_philo);
 }
