@@ -3,17 +3,17 @@
 /*                                                        :::      ::::::::   */
 /*   routine.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: samoreno <samoreno@student.42.fr>          +#+  +:+       +#+        */
+/*   By: samoreno <samoreno@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/03 14:52:19 by samoreno          #+#    #+#             */
-/*   Updated: 2022/04/27 11:17:10 by samoreno         ###   ########.fr       */
+/*   Updated: 2022/07/13 12:01:38 by samoreno         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h" 
 
-static void	*ft_eat(t_philo *philo);
-static void	*ft_sleep(t_philo *philo);
+static int	ft_eat(t_philo *philo);
+static int	ft_sleep(t_philo *philo);
 
 void	*ft_routine(void *arg)
 {
@@ -24,41 +24,43 @@ void	*ft_routine(void *arg)
 		ft_wait(50, philo);
 	while (ft_check_death(philo->gen) == 0)
 	{
-		ft_eat(philo);
+		if (ft_eat(philo) == 1)
+			return (NULL);
 		if (ft_check_death(philo->gen) == 1)
 			return (NULL);
-		ft_sleep(philo);
+		if (ft_sleep(philo) == 1)
+			return (NULL);
 	}
 	return (NULL);
 }
 
-static void	*ft_eat(t_philo *philo)
+static int	ft_eat(t_philo *philo)
 {
 	struct timeval	eat;
 
 	if (ft_pick_forks(philo) == 1)
-		return (NULL);
+		return (1);
 	pthread_mutex_lock(&philo->gen->pr_lock);
+	gettimeofday(&eat, NULL);
 	if (ft_check_death(philo->gen) == 1)
 	{
 		pthread_mutex_unlock(&philo->gen->pr_lock);
-		return (NULL);
+		return (1);
 	}
-	gettimeofday(&eat, NULL);
 	pthread_mutex_lock(&philo->gen->eat_lock);
 	philo->last_eat = ft_time_diff(eat, philo->gen->timestamp);
-	printf("[%lld] #%d is eating\n", philo->last_eat, philo->id_philo);
 	pthread_mutex_unlock(&philo->gen->eat_lock);
+	printf(GREEN "[%lld] #%d is eating\n", philo->last_eat, philo->id_philo);
 	pthread_mutex_unlock(&philo->gen->pr_lock);
 	ft_wait(philo->gen->t_eat, philo);
 	ft_drop_forks(philo);
 	pthread_mutex_lock(&philo->gen->eat_lock);
 	philo->ate++;
 	pthread_mutex_unlock(&philo->gen->eat_lock);
-	return (NULL);
+	return (0);
 }
 
-static void	*ft_sleep(t_philo *philo)
+static int	ft_sleep(t_philo *philo)
 {
 	struct timeval	sleep;
 	struct timeval	think;
@@ -68,9 +70,9 @@ static void	*ft_sleep(t_philo *philo)
 	if (ft_check_death(philo->gen) == 1)
 	{
 		pthread_mutex_unlock(&philo->gen->pr_lock);
-		return (NULL);
+		return (1);
 	}
-	printf("[%lld] #%d is sleeping\n",
+	printf(YELLOW "[%lld] #%d is sleeping\n",
 		ft_time_diff(sleep, philo->gen->timestamp), philo->id_philo);
 	pthread_mutex_unlock(&philo->gen->pr_lock);
 	ft_wait(philo->gen->t_sleep, philo);
@@ -79,10 +81,10 @@ static void	*ft_sleep(t_philo *philo)
 	if (ft_check_death(philo->gen) == 1)
 	{
 		pthread_mutex_unlock(&philo->gen->pr_lock);
-		return (NULL);
+		return (1);
 	}
-	printf("[%lld] #%d is thinking\n",
+	printf(MAGENTA "[%lld] #%d is thinking\n",
 		ft_time_diff(think, philo->gen->timestamp), philo->id_philo);
 	pthread_mutex_unlock(&philo->gen->pr_lock);
-	return (NULL);
+	return (0);
 }

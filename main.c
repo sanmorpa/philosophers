@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: samoreno <samoreno@student.42.fr>          +#+  +:+       +#+        */
+/*   By: samoreno <samoreno@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/04 14:48:56 by samoreno          #+#    #+#             */
-/*   Updated: 2022/04/28 17:23:36 by samoreno         ###   ########.fr       */
+/*   Updated: 2022/07/13 14:08:58 by samoreno         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,9 +31,7 @@ int	main(int argc, char **argv)
 			return (1);
 		}
 		ft_forks(philos, locks);
-		ft_threads(&philos);
-		ft_destroy_mutex(philos[0].gen->n_philo, locks, &info);
-		free(philos);
+		ft_threads(&philos, locks);
 	}
 	return (0);
 }

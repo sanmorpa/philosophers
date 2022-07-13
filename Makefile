@@ -1,11 +1,11 @@
-SRCS =		main.c info.c ./outils/ft_atoi.c errors.c threads.c routine.c \
-			time.c locks.c ./outils/ft_strlen.c forks.c alive.c ./outils/check.c
+SRCS =		main.c info.c outils.c errors.c threads.c routine.c \
+			time.c locks.c forks.c alive.c
 
 OBJS    =   ${SRCS:.c=.o}
 
 NAME	= 	philo
 
-CFLAGS	=	-Wall -Wextra -Werror -g3 -fsanitize=address
+CFLAGS	=	-Wall -Wextra -Werror
 
 CC		=	gcc
 

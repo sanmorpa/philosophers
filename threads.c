@@ -3,46 +3,40 @@
 /*                                                        :::      ::::::::   */
 /*   threads.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: samoreno <samoreno@student.42.fr>          +#+  +:+       +#+        */
+/*   By: samoreno <samoreno@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/04 14:49:21 by samoreno          #+#    #+#             */
-/*   Updated: 2022/04/28 17:07:10 by samoreno         ###   ########.fr       */
+/*   Updated: 2022/07/13 14:06:24 by samoreno         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
-static int	ft_create_threads(pthread_t *thr, t_philo *philos,
-				void **retvals);
+static int	ft_create_threads(pthread_t *thr, t_philo *philos);
 
-void	ft_threads(t_philo **philos)
+void	ft_threads(t_philo **philos, pthread_mutex_t *locks)
 {
 	pthread_t		*threads;
-	void			**retvals;
 	int				n_threads;
 
 	threads = malloc(sizeof(pthread_t) * philos[0]->gen->n_philo);
-	retvals = malloc(sizeof(void *) * philos[0]->gen->n_philo);
-	if (!threads || !retvals)
-	{
-		if (threads)
-			free(threads);
+	if (!threads)
 		printf("Error: malloc allocation failed\n");
-	}
 	else
 	{
-		n_threads = ft_create_threads(threads, *philos, retvals);
+		n_threads = ft_create_threads(threads, *philos);
 		if (n_threads > 0)
 		{
-			ft_wait(philos[0]->gen->t_die, *philos);
+			usleep(philos[0]->gen->t_die);
 			ft_alive(*philos);
-			pthread_mutex_unlock(&philos[0]->gen->pr_lock);
-			ft_join_threads(n_threads, threads, retvals);
+			ft_join_threads(n_threads, threads);
 		}
 	}
+	ft_destroy_mutex(-1, locks, philos[0]->gen);
+	free(*philos);
 }
 
-static int	ft_create_threads(pthread_t *thr, t_philo *philos, void **retv)
+static int	ft_create_threads(pthread_t *thr, t_philo *philos)
 {
 	int				iter_th;
 	struct timeval	init_t;
@@ -56,7 +50,7 @@ static int	ft_create_threads(pthread_t *thr, t_philo *philos, void **retv)
 				(void *)&philos[iter_th]) != 0)
 		{
 			printf("Error: thread #%d hasn't been created\n", iter_th);
-			ft_join_threads(iter_th, &thr[iter_th], retv);
+			ft_join_threads(iter_th, &thr[iter_th]);
 			return (-1);
 		}
 		iter_th++;
@@ -64,14 +58,14 @@ static int	ft_create_threads(pthread_t *thr, t_philo *philos, void **retv)
 	return (iter_th);
 }
 
-void	ft_join_threads(int threads, pthread_t *thr, void **retvals)
+void	ft_join_threads(int threads, pthread_t *thr)
 {
 	int	iter_join;
 
 	iter_join = 0;
 	while (iter_join < threads)
 	{
-		if (pthread_join(thr[iter_join], &retvals[iter_join]) != 0)
+		if (pthread_join(thr[iter_join], NULL) != 0)
 		{
 			printf("Error: Thread #%d hasn't been joined\n", iter_join);
 			break ;
@@ -79,5 +73,4 @@ void	ft_join_threads(int threads, pthread_t *thr, void **retvals)
 		iter_join++;
 	}
 	free(thr);
-	free(retvals);
 }

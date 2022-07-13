@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   errors.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: samoreno <samoreno@student.42.fr>          +#+  +:+       +#+        */
+/*   By: samoreno <samoreno@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/04 14:48:47 by samoreno          #+#    #+#             */
-/*   Updated: 2022/04/28 16:43:22 by samoreno         ###   ########.fr       */
+/*   Updated: 2022/07/13 10:34:55 by samoreno         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,6 +51,3 @@ static int	ft_integer(char *arg)
 	}
 	return (0);
 }
-
-/*ft_errors will check if there are 4-5 arguments and
-they are all a positive, not-zero integer*/ 

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   forks.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: samoreno <samoreno@student.42.fr>          +#+  +:+       +#+        */
+/*   By: samoreno <samoreno@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/11 16:51:49 by samoreno          #+#    #+#             */
-/*   Updated: 2022/04/27 10:16:06 by samoreno         ###   ########.fr       */
+/*   Updated: 2022/07/13 12:31:53 by samoreno         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,18 +24,18 @@ int	ft_pick_forks(t_philo *philo)
 		pthread_mutex_unlock(&philo->gen->pr_lock);
 		return (1);
 	}
-	printf("[%lld] #%d has taken a fork\n",
+	printf(BLUE "[%lld] #%d has taken a fork\n",
 		ft_time_diff(picks[0], philo->gen->timestamp), philo->id_philo);
 	pthread_mutex_unlock(&philo->gen->pr_lock);
 	pthread_mutex_lock(philo->r_lock);
 	pthread_mutex_lock(&philo->gen->pr_lock);
+	gettimeofday(&picks[1], NULL);
 	if (ft_check_death(philo->gen) == 1)
 	{
 		pthread_mutex_unlock(&philo->gen->pr_lock);
 		return (1);
 	}
-	gettimeofday(&picks[1], NULL);
-	printf("[%lld] #%d has taken a fork\n",
+	printf(BLUE "[%lld] #%d has taken a fork\n",
 		ft_time_diff(picks[1], philo->gen->timestamp), philo->id_philo);
 	pthread_mutex_unlock(&philo->gen->pr_lock);
 	return (0);

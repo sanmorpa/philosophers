@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   locks.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: samoreno <samoreno@student.42.fr>          +#+  +:+       +#+        */
+/*   By: samoreno <samoreno@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/09 09:52:23 by samoreno          #+#    #+#             */
-/*   Updated: 2022/04/28 16:57:26 by samoreno         ###   ########.fr       */
+/*   Updated: 2022/07/13 14:07:08 by samoreno         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,15 +63,18 @@ static int	ft_other_locks(t_info *info)
 
 void	ft_destroy_mutex(int iter, pthread_mutex_t *mutexs, t_info *info)
 {
-	while (iter >= 0)
+	if (iter >= 0)
 	{
-		pthread_mutex_destroy(&mutexs[iter]);
-		iter--;
+		while (iter >= 0)
+		{
+			pthread_mutex_destroy(&mutexs[iter]);
+			iter--;
+		}
 	}
+	free(mutexs);
 	pthread_mutex_destroy(&info->pr_lock);
 	pthread_mutex_destroy(&info->eat_lock);
 	pthread_mutex_destroy(&info->death_lock);
-	free(mutexs);
 }
 
 void	ft_forks(t_philo *philos, pthread_mutex_t *locks)
@@ -79,18 +82,12 @@ void	ft_forks(t_philo *philos, pthread_mutex_t *locks)
 	int		iter;
 
 	iter = 0;
-	while (iter < philos[0].gen->n_philo)
+	while (iter < (philos[0].gen->n_philo - 1))
 	{
-		if (iter == philos[0].gen->n_philo - 1)
-		{
-			philos[iter].l_lock = &locks[iter];
-			philos[iter].r_lock = &locks[0];
-		}
-		else
-		{
-			philos[iter].l_lock = &locks[iter];
-			philos[iter].r_lock = &locks[iter + 1];
-		}
+		philos[iter].l_lock = &locks[iter];
+		philos[iter].r_lock = &locks[iter + 1];
 		iter++;
 	}
+	philos[iter].l_lock = &locks[iter];
+	philos[iter].r_lock = &locks[0];
 }

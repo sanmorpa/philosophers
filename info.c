@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   info.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: samoreno <samoreno@student.42.fr>          +#+  +:+       +#+        */
+/*   By: samoreno <samoreno@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/04 14:49:05 by samoreno          #+#    #+#             */
-/*   Updated: 2022/04/28 16:46:05 by samoreno         ###   ########.fr       */
+/*   Updated: 2022/07/13 10:39:59 by samoreno         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,18 +54,16 @@ t_philo	*ft_philos(t_info *info)
 	iter = 0;
 	philos = malloc(sizeof(t_philo) * info->n_philo);
 	if (!philos)
+	{
+		printf("Error: malloc allocation failed\n");
 		return (NULL);
+	}
 	while (iter < info->n_philo)
 	{
 		philos[iter].gen = info;
 		philos[iter].id_philo = iter + 1;
 		philos[iter].last_eat = 0LL;
 		philos[iter].ate = 0;
-		philos[iter].l_fork = iter;
-		if (iter == info->n_philo - 1)
-			philos[iter].r_fork = 0;
-		else
-			philos[iter].r_fork = iter + 1;
 		iter++;
 	}
 	return (philos);

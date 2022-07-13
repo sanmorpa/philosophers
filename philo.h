@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   philo.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: samoreno <samoreno@student.42.fr>          +#+  +:+       +#+        */
+/*   By: samoreno <samoreno@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/26 10:05:07 by samoreno          #+#    #+#             */
-/*   Updated: 2022/04/28 17:06:13 by samoreno         ###   ########.fr       */
+/*   Updated: 2022/07/13 14:07:51 by samoreno         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,13 @@
 # include <unistd.h>
 # include <sys/time.h>
 # include <pthread.h>
+
+# define RED		"\x1b[31m"
+# define GREEN		"\x1b[32m"
+# define YELLOW 	"\x1b[33m"
+# define BLUE		"\x1b[36m"
+# define MAGENTA	"\x1b[35m"
+# define WHITE		"\x1b[0m"
 
 typedef struct s_info
 {
@@ -36,8 +43,6 @@ typedef struct s_info
 
 typedef struct s_philo
 {
-	int				l_fork;
-	int				r_fork;
 	int				id_philo;
 	long long int	last_eat;
 	int				ate;
@@ -51,7 +56,7 @@ int				ft_errors(int argc, char **argv);
 t_info			ft_info(int argc, char **argv);
 t_philo			*ft_philos(t_info *info);
 int				ft_atoi(const char *str);
-void			ft_threads(t_philo **philos);
+void			ft_threads(t_philo **philos, pthread_mutex_t *locks);
 void			*ft_routine(void *arg);
 void			ft_alive(t_philo *philos);
 void			*ft_wait(int event, t_philo *philo);
@@ -60,7 +65,7 @@ void			ft_forks(t_philo *philos, pthread_mutex_t *locks);
 long long int	ft_time_diff(struct timeval now, long long int og);
 int				ft_pick_forks(t_philo *philo);
 void			ft_drop_forks(t_philo *philo);
-void			ft_join_threads(int threads, pthread_t *thr, void **retvals);
+void			ft_join_threads(int threads, pthread_t *thr);
 int				ft_filled(t_philo *philos);
 int				ft_check_death(t_info *info);
 void			ft_destroy_mutex(int iter, pthread_mutex_t *mutexs,
