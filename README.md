@@ -73,6 +73,6 @@
     <p>
     Launch the program as follows:<br/>
   <b>./philos number_of_philosophers time_to_die time_to_eat time_to_sleep [number_of_times_each_philosopher_must_eat]</b></br>
-    It is recommended you use at least 60 miliseconds for each of the times
+    It is recommended you use at least 60 miliseconds for each of the times. It works best with a number of philosophers under 200.
     </p>
 </div>
