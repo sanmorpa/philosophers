@@ -6,7 +6,7 @@
 /*   By: samoreno <samoreno@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/03 14:52:19 by samoreno          #+#    #+#             */
-/*   Updated: 2022/07/13 12:01:38 by samoreno         ###   ########.fr       */
+/*   Updated: 2022/07/14 09:34:35 by samoreno         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,11 +52,11 @@ static int	ft_eat(t_philo *philo)
 	pthread_mutex_unlock(&philo->gen->eat_lock);
 	printf(GREEN "[%lld] #%d is eating\n", philo->last_eat, philo->id_philo);
 	pthread_mutex_unlock(&philo->gen->pr_lock);
-	ft_wait(philo->gen->t_eat, philo);
-	ft_drop_forks(philo);
 	pthread_mutex_lock(&philo->gen->eat_lock);
 	philo->ate++;
 	pthread_mutex_unlock(&philo->gen->eat_lock);
+	ft_wait(philo->gen->t_eat, philo);
+	ft_drop_forks(philo);
 	return (0);
 }
 

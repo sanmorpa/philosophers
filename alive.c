@@ -6,13 +6,13 @@
 /*   By: samoreno <samoreno@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/14 10:13:33 by samoreno          #+#    #+#             */
-/*   Updated: 2022/07/13 14:07:14 by samoreno         ###   ########.fr       */
+/*   Updated: 2022/07/14 09:36:56 by samoreno         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
-static void	ft_print_death(t_philo *philo, int iter);
+static void	ft_print_death(t_philo *philo, int iter, int status);
 static void	ft_unlock(t_philo *philos);
 static int	ft_status(t_philo *philo, int iter);
 
@@ -36,12 +36,10 @@ void	ft_alive(t_philo *philos)
 			iter++;
 		}
 	}
-	pthread_mutex_lock(&philos[0].gen->pr_lock);
 	pthread_mutex_lock(&philos[0].gen->death_lock);
 	philos[0].gen->death = 1;
 	pthread_mutex_unlock(&philos[0].gen->death_lock);
-	if (status == 1)
-		ft_print_death(philos, iter);
+	ft_print_death(philos, iter, status);
 	ft_unlock(philos);
 }
 
@@ -69,14 +67,15 @@ int	ft_filled(t_philo *philos)
 		return (0);
 	while (iter < philos[0].gen->n_philo)
 	{
-		pthread_mutex_lock(&philos[iter].gen->eat_lock);
 		if (philos[iter].ate >= philos[iter].gen->n_eat)
 			filled++;
-		pthread_mutex_unlock(&philos[iter].gen->eat_lock);
 		iter++;
 	}
 	if (filled == philos[0].gen->n_philo)
+	{
+		pthread_mutex_lock(&philos[0].gen->pr_lock);
 		return (1);
+	}
 	return (0);
 }
 
@@ -96,14 +95,18 @@ static int	ft_status(t_philo *philo, int iter)
 	return (1);
 }
 
-static void	ft_print_death(t_philo *philo, int iter)
+static void	ft_print_death(t_philo *philo, int iter, int status)
 {
 	struct timeval	death;
 
 	if (iter == philo[0].gen->n_philo)
 		iter -= 1;
 	gettimeofday(&death, NULL);
-	printf(RED "[%lld] #%d died\n",
-		ft_time_diff(death, philo[iter].gen->timestamp), philo[iter].id_philo);
+	if (status == 1)
+	{
+		pthread_mutex_lock(&philo[iter].gen->pr_lock);
+		printf(RED "[%lld] #%d died\n", ft_time_diff(death,
+				philo[iter].gen->timestamp), philo[iter].id_philo);
+	}
 	pthread_mutex_unlock(&philo[iter].gen->pr_lock);
 }
