@@ -5,7 +5,7 @@ OBJS    =   ${SRCS:.c=.o}
 
 NAME	= 	philo
 
-CFLAGS	=	-Wall -Wextra -Werror -g3 -fsanitize=address
+CFLAGS	=	-Wall -Wextra -Werror
 
 CC		=	gcc
 

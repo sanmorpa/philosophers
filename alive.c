@@ -6,7 +6,7 @@
 /*   By: samoreno <samoreno@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/14 10:13:33 by samoreno          #+#    #+#             */
-/*   Updated: 2022/07/14 09:36:56 by samoreno         ###   ########.fr       */
+/*   Updated: 2022/07/14 10:33:24 by samoreno         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,7 @@ void	ft_alive(t_philo *philos)
 				break ;
 			iter++;
 		}
+		usleep(1000);
 	}
 	pthread_mutex_lock(&philos[0].gen->death_lock);
 	philos[0].gen->death = 1;
@@ -67,8 +68,10 @@ int	ft_filled(t_philo *philos)
 		return (0);
 	while (iter < philos[0].gen->n_philo)
 	{
+		pthread_mutex_lock(&philos[0].gen->eat_lock);
 		if (philos[iter].ate >= philos[iter].gen->n_eat)
 			filled++;
+		pthread_mutex_unlock(&philos[0].gen->eat_lock);
 		iter++;
 	}
 	if (filled == philos[0].gen->n_philo)
@@ -108,5 +111,6 @@ static void	ft_print_death(t_philo *philo, int iter, int status)
 		printf(RED "[%lld] #%d died\n", ft_time_diff(death,
 				philo[iter].gen->timestamp), philo[iter].id_philo);
 	}
+	printf(WHITE);
 	pthread_mutex_unlock(&philo[iter].gen->pr_lock);
 }
