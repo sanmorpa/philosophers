@@ -1,4 +1,4 @@
-<h1>philosophers</h1>
+<h1>philosophers <a href="https://github.com/JaeSeoKim/badge42"><img src="https://badge42.vercel.app/api/v2/cl8uf09z900060gl2pg6sdczb/project/2486940" alt="samoreno's 42 Philosophers Score" /></a></h1>
 <h2>Project description</h2>
 <div>
 <!--  <a href="https://github.com/JaeSeoKim/badge42">
